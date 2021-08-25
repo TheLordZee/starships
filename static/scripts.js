@@ -26,6 +26,7 @@ function preload (){
 }
 
 function create (){
+
     this.add.image(400, 300, 'sky');
 
     let particles = this.add.particles('red');
