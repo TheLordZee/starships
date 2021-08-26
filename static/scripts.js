@@ -12,7 +12,7 @@ let controls;
 let game = new Phaser.Game(config);
 
 function preload (){
-    this.load.image('ship', '../static/imgs/Nova-Class.png')
+    this.load.image('ship', '../static/imgs/WhiteSide/ImmortalityClass.png')
     this.load.image('fire', '../static/imgs/fire.png')
     // this.load.setBaseURL('http://labs.phaser.io');
 
@@ -24,7 +24,7 @@ function preload (){
 let cursors;
 
 function create (){
-    this.add.image(1900, 300, 'sky');
+    this.add.image(2900, 300, 'sky');
 
     let particles = this.add.particles('fire');
 
@@ -34,18 +34,18 @@ function create (){
         blendMode: 'ADD'
     });
 
-    let logo = this.add.image(400, 300, 'ship');
-
+    let ship = this.add.image(400, 300, 'ship');
+    ship.flipX = true
     // logo.setVelocity(100, 200);
     // logo.setBounce(1, 1);
     // logo.setCollideWorldBounds(true);
 
-    console.log(logo)
+    console.log(ship)
 
-    emitter.startFollow(logo);
+    emitter.startFollow(ship);
     
     // this.matter.world.setBounds(0,0,4000,1000)
-    this.cameras.main.setBounds(0,0,4000,1000)
+    this.cameras.main.setBounds(0,0,6000,1000)
  
     let cursors = this.input.keyboard.createCursorKeys();
 
