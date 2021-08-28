@@ -1,10 +1,9 @@
 class ShipBtn {
-    constructor(x, y, ship, cost){
-        this.btn = game.scene.scenes[1].add.image(x, y, 'shipBtn')
+    constructor(scene, x, y, ship, cost){
+        this.btn = scene.add.image(x, y, 'shipBtn')
             .setInteractive()
             .on('pointerdown', () => {
                 if(Player.materials > cost){
-                    Player.materials -= cost;
                     switch(Player.side){
                         case 'light':
                             game.scene.scenes[0].createLightShip(ship, true)
@@ -13,25 +12,14 @@ class ShipBtn {
                             game.scene.scenes[0].createDarkShip(ship, true)
                             break;
                     }
-                        
+                    Player.materials -= cost;
                 }
             })
-        this.ship = game.scene.scenes[1].add.image(x, y, ship)
+        
+        this.ship = scene.add.image(x, y, ship)
+        this.cost = scene.add.text(x, y+10, `${cost}`, {font: '24px Anton-Regular', fill: '#fff'})
         this.ship.flipX = true
-        this.scaleX = .25           
-        this.scaleY = .25
+        this.ship.scaleX = 0.5           
+        this.ship.scaleY = 0.5
     }
 }
-
-// const button1 = this.add.image(300, 560, 'shipBtn')
-//     .setInteractive()
-//     .on('pointerdown', () => {
-//         if(materials > 10){
-//             materials -= 10;
-//             game.createShip('immortality')
-//         }
-//     })
-// const ship1 = this.add.image(300, 560, 'ship')
-// ship1.flipX = true
-// ship1.scaleX = .25
-// ship1.scaleY = .25
