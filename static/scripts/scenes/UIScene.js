@@ -17,7 +17,7 @@ const UIScene = new Phaser.Class({
             .on('pointerdown', () => {
                 if(Player.materials > 10){
                     Player.materials -= 10;
-                    game.createShip('immortality')
+                    game.createLightShip('immortality', true)
                 }
             })
         const ship1 = this.add.image(300, 560, 'ship')
@@ -29,9 +29,9 @@ const UIScene = new Phaser.Class({
         const button2 = this.add.image(450, 560, 'shipBtn')
             .setInteractive()
             .on('pointerdown', () => {
-                if(materials > 10){
-                    materials -= 10;
-                    game.createShip('destiny')
+                if(Player.materials > 1){
+                    Player.materials -= 1;
+                    game.createLightShip('destiny', true)
                 }
             })
         const ship2 = this.add.image(450, 560, 'destiny')

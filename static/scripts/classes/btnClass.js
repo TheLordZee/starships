@@ -5,13 +5,21 @@ class ShipBtn {
             .on('pointerdown', () => {
                 if(Player.materials > cost){
                     Player.materials -= cost;
-                    game.scene.scenes[0].createShip('destiny')
+                    switch(Player.side){
+                        case 'light':
+                            game.scene.scenes[0].createLightShip(ship, true)
+                            break;
+                        case 'dark':
+                            game.scene.scenes[0].createDarkShip(ship, true)
+                            break;
+                    }
+                        
                 }
             })
         this.ship = game.scene.scenes[1].add.image(x, y, ship)
         this.ship.flipX = true
-        this.scaleX = .5           
-        this.scaleY = .5
+        this.scaleX = .25           
+        this.scaleY = .25
     }
 }
 

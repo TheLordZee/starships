@@ -1,8 +1,9 @@
 class User {
-    constructor(side, planet){
-        this.side = side
-        this.materials = 0
-        this.planet = planet
+    constructor(side){
+        this.side = side;
+        this.materials = 0;
+        this.planet;
+        this.shots = [];
     }
 }
 
