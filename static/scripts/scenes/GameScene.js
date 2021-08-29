@@ -1,6 +1,4 @@
 const toRender = [];
-const lightShips = [];
-const darkShips = [];
 const GameScene = new Phaser.Class({
     Extends: Phaser.Scene,
     initialize:
@@ -72,6 +70,14 @@ const GameScene = new Phaser.Class({
             maxSpeed: 1.0
         }
         controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig)
+
+        const newEnemy  = this.time.addEvent({
+            delay: 1000,
+            callback: ()=> {
+                this.spawnEnemy()
+            },
+            loop: true
+        })   
     },
     enemyDetection(detector, ship){
         detector.parentContainer.ship.shoot(this, ship)
@@ -119,14 +125,15 @@ const GameScene = new Phaser.Class({
                 laser.destroy()
             })
         }
-        if(miner.sides === 'light'){
-            lightShips.push(miner)
+        if(isPlayer){
+            Player.miningShips.push(miner)
         }else{
-            darkShips.push(miner)
+            Enemy.miningShips.push(miner)
         }
+        return miner
     },
-    createLightShip(shipName, isPlayer){
-        let light;
+    createShip(shipName, isPlayer){
+        let ship;
         let x
         let y =  Phaser.Math.Between(50,500)
         if(isPlayer){
@@ -136,133 +143,66 @@ const GameScene = new Phaser.Class({
         }
         switch(shipName){
             case 'immortality':
-                light = new Immortalty(this, x, y, isPlayer)
+                ship = new Immortalty(this, x, y, isPlayer)
                 break;
             case 'destiny':
-                light = new Destiny(this, x, y, isPlayer)
+                ship = new Destiny(this, x, y, isPlayer)
                 break;
             case 'paradox':
-                light = new Paradox(this, x, y, isPlayer)
+                ship = new Paradox(this, x, y, isPlayer)
                 break;
             case 'diviniy':
-                light = new Diviniy(this, x, y, isPlayer)
+                ship = new Diviniy(this, x, y, isPlayer)
                 break;
             case 'endymion':
-                light = new Endymion(this, x, y, isPlayer)
+                ship = new Endymion(this, x, y, isPlayer)
                 break;
             case 'lux':
-                light = new Lux(this, x, y, isPlayer)
+                ship = new Lux(this, x, y, isPlayer)
                 break;
-            default:
-                console.log(`${shipName} class hasn't been made yet`)
-        }
-        if(Player.side === 'light'){
-            light.ship.flipX = true
-        }
-        
-        if(Player.side === 'light'){
-            this.physics.add.collider(light.detector, Enemy.planet, (light, planet) => {
-                this.enemyDetection(light, planet)   
-            })
-        }else{
-            this.physics.add.collider(light.detector, Player.planet, (light, planet) => {
-                this.enemyDetection(light, planet)   
-            })
-        }
-
-        lightShips.push(light)
-
-        for(let dark of darkShips){
-            this.physics.add.collider(light, dark, (light, dark) => {
-                light.ship.moving = false
-                dark.ship.moving = false
-                light.parentContainer.body.velocity['x'] = 0
-                dark.parentContainer.body.velocity['x'] = 0
-            })
-            
-            this.physics.add.collider(light.detector, dark.ship, (col, ship)=>{ this.enemyDetection(col, ship) })
-
-            this.physics.add.collider(dark.detector, light.ship, (col, ship)=>{ this.enemyDetection(col, ship) })
-        }
-
-        let enemyShots
-        if(isPlayer){
-            enemyShots = Enemy.shots
-        } else {
-            enemyShots = Player.shots
-        }
-        for(let shot in enemyShots){
-            this.physics.add.collider(shot, light, (laser, ship) => {
-                ship.health -= this.damage
-                if(ship.health <= 0){
-                    ship.destroy()
-                }
-                laser.destroy()
-            })
-        }
-        console.log(light)
-        return light
-    },
-    createDarkShip(shipName, isPlayer){
-        let dark
-        let y = Phaser.Math.Between(50,500)
-        let x
-        if(isPlayer){
-            x = 400
-        } else {
-            x = 5100
-        }
-        switch(shipName){
             case 'pawn':
-                dark = new Pawn(this, x, y, isPlayer)
+                ship = new Pawn(this, x, y, isPlayer)
                 break;
             case 'cerberus':
-                dark = new Cerberus(this, x, y, isPlayer)
+                ship = new Cerberus(this, x, y, isPlayer)
                 break;
             case 'devastator':
-                dark = new Devastator(this, x, y, isPlayer)
+                ship = new Devastator(this, x, y, isPlayer)
                 break;
             case 'heritage':
-                dark = new Heritage(this, x, y, isPlayer)
+                ship = new Heritage(this, x, y, isPlayer)
                 break;
             case 'onyx':
-                dark = new Onyx(this, x, y, isPlayer)
+                ship = new Onyx(this, x, y, isPlayer)
                 break;
             case 'raptor':
-                dark = new Raptor(this, x, y, isPlayer)
+                ship = new Raptor(this, x, y, isPlayer)
                 break;
             default:
                 console.log(`${shipName} class hasn't been made yet`)
-        }      
-        if(Player.side === 'dark'){
-            dark.ship.flipX = true
-            this.physics.add.collider(dark.detector, Enemy.planet, (d, planet) => {
-                this.enemyDetection(d, planet)   
+        }
+        let ships;
+        if(isPlayer){
+            ship.ship.flipX = true
+            this.physics.add.collider(ship.detector, Enemy.planet, (s, planet) => {
+                this.enemyDetection(s, planet)
             })
+            Player.currShips.push(ship)
+            ships = Enemy.currShips
         }else{
-            this.physics.add.collider(dark.detector, Player.planet, (d, planet) => {
-                this.enemyDetection(d, planet)   
+            this.physics.add.collider(ship.detector, Player.planet, (s, planet) => {
+                this.enemyDetection(s, planet)   
             })
+            Enemy.currShips.push(ship)
+            ships = Player.currShips
+        }
+        for(let s of ships){
+            if(s.type !== 'miner'){
+                this.physics.add.collider(ship.detector, s.ship, (col, ship)=>{ this.enemyDetection(col, ship) })
+                this.physics.add.collider(s.detector, ship.ship, (col, ship)=>{ this.enemyDetection(col, ship) })
+            }
         }
 
-        for(let light of lightShips){
-            this.physics.add.collider(light.ship, dark.ship, (light, dark) => {
-                light.parentContainer.moving = false
-                dark.parentContainer.moving = false
-                light.parentContainer.body.velocity['x'] = 0
-                dark.parentContainer.body.velocity['x'] = 0
-            })
-
-            this.physics.add.collider(dark.detector, light.ship, (col, dark)=>{ this.enemyDetection(col, dark) })
-
-            this.physics.add.collider(light.detector, dark.ship, (col, dark)=>{ this.enemyDetection(col, dark) })
-        }
-
-        dark.on('overlapend', () => {
-            console.log(dark)
-        })
-
-        darkShips.push(dark)
         let enemyShots
         if(isPlayer){
             enemyShots = Enemy.shots
@@ -270,7 +210,7 @@ const GameScene = new Phaser.Class({
             enemyShots = Player.shots
         }
         for(let shot in enemyShots){
-            this.physics.add.collider(shot, dark, (laser, ship) => {
+            this.physics.add.collider(shot, ship, (laser, ship) => {
                 ship.health -= this.damage
                 if(ship.health <= 0){
                     ship.destroy()
@@ -278,43 +218,72 @@ const GameScene = new Phaser.Class({
                 laser.destroy()
             })
         }
-        console.log(dark)
-        return dark
+        
+        return ship
+    },
+    spawnEnemy(){
+        let ship = Phaser.Math.RND.pick(Enemy.ships)
+        let enemy;
+        if(Enemy.materials >= ship['cost']){
+            if(ship['class'] === 'ship'){
+                enemy = this.createShip(ship['name'], false);
+            }else{
+                switch(Enemy.side){
+                    case 'light':
+                        enemy = this.createMiner('cherub', false)
+                        Enemy.miningShips.push(enemy)
+                        break;
+                    case 'dark':
+                        enemy = this.createMiner('star', false)
+                        Enemy.miningShips.push(enemy)
+                        break;
+                    default:
+                        throw(`Error: ${Enemy.side} is not a valid side`)
+                }
+            }
+            Enemy.materials -= ship['cost']
+        }
+        return enemy;
     },
     update(time, delta){
         controls.update(delta)
         Player.planet.setValue(Player.planet.healthBar, (Player.planet.health/Player.planet.maxHealth) * 100);
         Enemy.planet.setValue(Enemy.planet.healthBar, (Enemy.planet.health/Enemy.planet.maxHealth) * 100);
         
-        for(let ship in lightShips){
-            if(ship.type !== 'miner'){
-                if(ship.moving && !ship.ship.hasTarget){
-                    ship.body.acceleration = ship.ship.acceleration
-                    ship.body.velocity['x'] = ship.ship.speed
-                }
+        for(let ship of Player.currShips){
+            try{
+            if(ship.ship.hasTarget){
+                ship.body.acceleration = 0
+                ship.body.velocity['x'] = 0
+            } else {
+                ship.body.acceleration = ship.ship.acceleration
+                ship.body.velocity['x'] = ship.ship.speed
+            }
+            }catch(e){
+                console.log(Player.currShips)
+            }
+        }
+        for(let ship of Player.miningShips){
+            ship.body.acceleration = ship.acceleration
+            ship.body.velocity['x'] = ship.speed
+        }
+        for(let ship of Enemy.currShips){
+            try{
                 if(ship.ship.hasTarget){
                     ship.body.acceleration = 0
                     ship.body.velocity['x'] = 0
-                }
-            }else{
-                ship.body.acceleration = ship.acceleration
-                ship.body.velocity['x'] = ship.speed
-            }
-        }
-        for(let ship of darkShips){
-            if(ship.type === 'miner'){
-                ship.body.acceleration = ship.acceleration
-                ship.body.velocity['x'] = ship.speed
-            }else{
-                if(ship.moving && !ship.ship.hasTarget){
+                }else{
                     ship.body.acceleration = ship.ship.acceleration
                     ship.body.velocity['x'] = ship.ship.speed
                 }
-                if(ship.ship.hasTarget){
-                    ship.body.acceleration = 0
-                    ship.body.velocity['x'] = 0
-                }
+            }catch(e){
+                console.log(Enemy.currShips)
             }
         }
+        for(let ship of Enemy.miningShips){
+            ship.body.acceleration = ship.acceleration
+            ship.body.velocity['x'] = ship.speed
+        }
+        
     }
 })

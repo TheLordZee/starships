@@ -18,7 +18,6 @@ const UIScene = new Phaser.Class({
         .setInteractive()
         .on('pointerdown', () => {
             if(Player.materials > 10){
-                console.log(game)
                 game.createMiner(m, true)
                 Player.materials -= 10;
             }
@@ -37,7 +36,7 @@ const UIScene = new Phaser.Class({
         
 
         const materialIncreaser = this.time.addEvent({
-            delay: 1000,
+            delay: 2000,
             callback: ()=> {
                 this.updateMaterials(Player.materials++)
                 Enemy.materials++        

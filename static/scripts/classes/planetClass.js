@@ -12,7 +12,7 @@ class Planet extends Phaser.GameObjects.Image   {
         this.maxHealth = 10000
         this.health = 10000
         this.body.immovable = true
-        this.type = 'planet'
+        this.class = 'planet'
         this.healthBar= this.makeBar(scene, x - 200, 50);
         this.setValue(this.healthBar, (this.health/this.maxHealth)* 100);
     }

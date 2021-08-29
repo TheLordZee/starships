@@ -4,14 +4,7 @@ class ShipBtn {
             .setInteractive()
             .on('pointerdown', () => {
                 if(Player.materials > cost){
-                    switch(Player.side){
-                        case 'light':
-                            game.scene.scenes[0].createLightShip(ship, true)
-                            break;
-                        case 'dark':
-                            game.scene.scenes[0].createDarkShip(ship, true)
-                            break;
-                    }
+                    game.scene.scenes[0].createShip(ship, true)
                     Player.materials -= cost;
                 }
             })
