@@ -8,6 +8,10 @@ app.config['SECRET_KEY'] = 'I am a secret. Shhhhhh!'
 def homepage():
     return render_template('home.html')
 
+@app.route('/game')
+def showGame():
+    return render_template('game.html')
+
 @app.route('/favicon.ico')
 def send_icon():
     return '/imgs/images.png'

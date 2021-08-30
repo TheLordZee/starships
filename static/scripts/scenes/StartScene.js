@@ -9,14 +9,16 @@ const StartScene = new Phaser.Class({
         Phaser.Scene.call(this,  {key: 'StartScene'})
     },
 
-    preload: function () {
+    preload() {
+        this.load.audio('sbgmusic', '../static/music/bgmusic.mp3')
         this.load.image('startbg', '../static/imgs/startbg.png')
         this.load.image('startBtn', '../static/imgs/button.png')
 
         this.load.image('light', '../static/imgs/WhiteSide/ImmortalityClass.png')
         this.load.image('dark', '../static/imgs/DarkSide/PawnClass.png')
     },
-    create: function () {
+    create() {
+        this.sound.add('sbgmusic', {loop: true}).play()
         console.log('New Scene')
         this.add.image(500, 300, 'startbg')
         this.add.text(40, 0, 'Starships At War', {font: '150px Robus', fill: '#fffff0'})
@@ -45,5 +47,10 @@ const StartScene = new Phaser.Class({
         })
         const dark = this.add.image(600, 400, 'dark')
         dark.setScale(0.4)
+    },
+    update(){
+        if (game.sound.context.state === 'suspended') {
+            game.sound.context.resume();
+        } 
     }
 });

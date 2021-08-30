@@ -1,0 +1,17 @@
+#page {
+    background-image: url('../imgs/pagebg.png');
+    background-position: center;
+    background-repeat: repeat;
+}
+#linkedin {
+    height: 20px;
+}
+#github {
+    height: 30px;
+}
+
+#profile {
+    height: 20vw;
+    width: 25vw;
+    border-radius: 50%;
+}
