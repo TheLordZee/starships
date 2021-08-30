@@ -1,13 +1,17 @@
 let config = {
     type: Phaser.AUTO,
-    width: 1100,
-    height: 600,
     physics:{
         default: 'arcade',
         arcade: {
             fps: 60,
             gravity: {y: 0}
         }
+    },
+    scale: {
+        parent: 'mygame',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 1100,
+        height: 600,
     },
     scene: [StartScene, GameScene, UIScene, EndScene]
 };
