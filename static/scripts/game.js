@@ -1,16 +1,15 @@
 let config = {
     type: Phaser.AUTO,
-    width: 1000,
+    width: 1100,
     height: 600,
     physics:{
         default: 'arcade',
         arcade: {
-            debug: true,
             fps: 60,
             gravity: {y: 0}
         }
     },
-    scene: [GameScene, UIScene]
+    scene: [StartScene, GameScene, UIScene, EndScene]
 };
 
 let game = new Phaser.Game(config);

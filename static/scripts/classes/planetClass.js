@@ -9,8 +9,8 @@ class Planet extends Phaser.GameObjects.Image   {
         super(scene, x, 311, planet);
         scene.physics.world.enable(this)
         scene.add.existing(this);
-        this.maxHealth = 10000
-        this.health = 10000
+        this.maxHealth = 1000
+        this.health = 1000
         this.body.immovable = true
         this.class = 'planet'
         this.healthBar= this.makeBar(scene, x - 200, 50);

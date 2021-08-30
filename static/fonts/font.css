@@ -2,3 +2,8 @@
     font-family: Anton-Regular;
     src: url("/static/fonts/Anton-Regular.ttf");
 }
+
+@font-face {
+    font-family: Robus;
+    src: url('/static/fonts/Robus.otf');
+}

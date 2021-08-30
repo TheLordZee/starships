@@ -2,64 +2,40 @@ const lights = [
     {
         'name': 'paradox',
         'cost': 10,
-        'class': 'ship'
+        'class': 'ship',
+        'scale': 1
     },
     {
         'name': 'destiny',
         'cost': 100,
-        'class': 'ship'
-    },
-    {
-        'name': 'divinity',
-        'cost': 500,
-        'class': 'ship'
-    },
-    {
-        'name': 'endymion',
-        'cost': 1000,
-        'class': 'ship'
-    },
-    {
-        'name': 'lux',
-        'cost': 5000,
-        'class': 'ship'
+        'class': 'ship',
+        'scale': 0.5
     },
     {
         'name': 'immortality',
-        'cost': 10000,
-        'class': 'ship'
+        'cost': 500,
+        'class': 'ship',
+        'scale': 0.4
     }
 ]
 const darks = [
     {
         'name': 'raptor',
         'cost': 10,
-        'class': 'ship'
+        'class': 'ship',
+        'scale': 1
     },
     {
         'name': 'cerberus',
         'cost': 100,
-        'class': 'ship'
-    },
-    {
-        'name': 'onyx',
-        'cost': 500,
-        'class': 'ship'
-    },
-    {
-        'name': 'heritage',
-        'cost': 1000,
-        'class': 'ship'
-    },
-    {
-        'name': 'devastator',
-        'cost': 5000,
-        'class': 'ship'
+        'class': 'ship',
+        'scale': 0.5
     },
     {
         'name': 'pawn',
-        'cost': 10000,
-        'class': 'ship'
+        'cost': 500,
+        'class': 'ship',
+        'scale': 0.4
     }
 ]
 
@@ -78,9 +54,13 @@ class User {
         this.currShips = [];
         this.miningShips = [];
     }
+    reset(){
+        this.materials = 0;
+        this.shots = [];
+        this.currShips = [];
+        this.miningShips = [];
+    }
 }
 
-const Player = new User('dark')
-const Enemy = new User('light')
-
-Enemy.ships.push(Enemy.side === 'light' ? {'name':'cherub', 'cost': 10, 'class': 'miner'} : {'name':'star', 'cost': 10, 'class': 'miner'})
+let Player;
+let Enemy; 
