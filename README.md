@@ -14,6 +14,6 @@ Bootstrap
 https://starshipsatwar.herokuapp.com/
 
 ## To setup and run server locally:
-1.  Set up and enter a virtual environment in the folder.
+1.  Set up and enter a virtual environment for Python in the folder.
 2.  Install requirements with "pip install -r requirements.txt" 
 3.  Start server with 'flask run'
